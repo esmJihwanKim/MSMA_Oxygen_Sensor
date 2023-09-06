@@ -2,12 +2,11 @@
 Savitsky-Golay filter
 '''
 
+from scipy import fftpack
 from scipy import signal
-from statistics import mean
 from sklearn.metrics import mean_squared_error
 import numpy as np
 from numpy import diff
-
 
 def mean_absolute_error(act, pred):
     diff = pred - act
@@ -58,3 +57,10 @@ def check_for_less(data, val):
             return False
     return True
 
+# Fourier transform
+def fft(data):
+    data_length = data.len()
+    sig_fft = fftpack.fft(data)
+    sig_amp = 2 / 0.2 * np.abs(sig_fft)
+    sig_freq = np.abs(fftpack.fftfreq(0.2, (0.2*data_length)/data_length))
+    return sig_freq, sig_amp
