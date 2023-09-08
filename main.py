@@ -1,6 +1,7 @@
 import glob
 import pandas as pd
 import process_signal as ps
+import show_result as pr
 import numpy as np
 
 from sklearn.metrics import mean_squared_error
@@ -67,43 +68,8 @@ for file in path:
     label_text = file.split("VISHAL-")[1]
     label_text = label_text.split((".DTA"))[0]
 
-    # PLOT (for algorithm design purpose)
-    # comment out when testing peak detection
-    fig, ax = plt.subplots(2, 2, figsize=(12, 7))
-    ax[0, 0].plot(x, list_y)
-    ax[0, 0].set_title(label_text + ":::raw y")
-    ax[0, 1].plot(x, list_y_filtered[0])
-    ax[0, 1].set_title(label_text + ":::filtered y")
-    ax[1, 0].plot(x, raw_d1)
-    ax[1, 0].set_title(label_text + ":::raw d1")
-    ax[1, 1].plot(x, filtered_d1)
-    ax[1, 1].set_title(label_text + ":::filtered d1")
-    plt.show()
-    # plt.savefig(label_text+'.png')
-
     # TODO: save the plots in disk
 
-    # PEAK FINDING - Trickle Down Algorithm
-    # @@
-    # @@
-    # @@
-    peak = []
-    # TODO: CONDITION: peaks exist before exponential increase
-
-    # TODO: CONDITION: voltage range from 0.35 - 0.65
-    # sort out the data points that are in the voltage range
-
-    # TODO: CONDITION: derivative range between 0-0.5
-
-    # TODO: CONDITION: peaks after positive gradient
 
 
 
-
-
-
-
-"""
-    for p in saline_peak:
-        plt.plot(p[0], p[1], marker="x", markersize=4, markeredgecolor="red", markerfacecolor="green")
-"""
