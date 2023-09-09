@@ -1,8 +1,8 @@
 import glob
 import pandas as pd
-import process_signal
-import conditions
-import show_result
+import Process_signal
+import Conditions
+import Show_result
 import numpy as np
 
 from sklearn.metrics import mean_squared_error
@@ -49,7 +49,7 @@ for file in path:
     raw_d2.append(raw_d2[len(raw_d2) - 1])
 
     # APPLY SAVITSKY-GOLAY TO RAW SIGNAL
-    savgol_list = process_signal.optimize_savgol(list_y)
+    savgol_list = Process_signal.optimize_savgol(list_y)
     opt_window_size1 = savgol_list[1]
     opt_order1 = savgol_list[2]
     list_y_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
@@ -66,12 +66,12 @@ for file in path:
     filtered_d1.append(filtered_d1[len(filtered_d1) - 1])  # concatenate last value for uniform data length
 
     # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
-    
+
 
     # TODO: APPLY CONDITIONS
     position_vector = []  # might be better to perform call by reference
-    position_vector = conditions.before_exponential_increase(position_vector=position_vector, d1_data=filtered_d1)
-    position_vector = conditions.voltage_range(position_vector=position_vector, list_x=list_x)
+    position_vector = Conditions.before_exponential_increase(position_vector=position_vector, d1_data=filtered_d1)
+    position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
     # apply other conditions
     # ...
     print(position_vector)
@@ -83,7 +83,7 @@ for file in path:
         if element > 0:
             possible_oxygen_level.append([list_x[index], list_y[index]])
 
-    show_result.plot_result_with_prediction(label_text=label_text, list_x=list_x,
+    Show_result.plot_result_with_prediction(label_text=label_text, list_x=list_x,
                                             list_y=list_y, list_possible_oxygen_level=possible_oxygen_level)
 
 

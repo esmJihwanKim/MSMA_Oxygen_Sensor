@@ -18,8 +18,8 @@ def before_exponential_increase(position_vector, d1_data):
 # TODO: CONDITION: voltage range from 0.35 - 0.65
 # sort out the data points that are in the voltage range
 # peaks exist in 0.35V - 0.65V range
-def voltage_range(position_vector, raw_xdata):
-    for index, value in enumerate(raw_xdata):
+def voltage_range(position_vector, list_x):
+    for index, value in enumerate(list_x):
         if(value > 0.35 and value < 0.65):
             position_vector[index] = position_vector[index] + 1
     return position_vector
