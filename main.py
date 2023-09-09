@@ -1,7 +1,8 @@
 import glob
 import pandas as pd
-import process_signal as ps
-import show_result as pr
+import process_signal
+import conditions
+import show_result
 import numpy as np
 
 from sklearn.metrics import mean_squared_error
@@ -10,10 +11,6 @@ from matplotlib import pyplot as plt
 from scipy import signal
 
 path = glob.glob('../../Dataset/B2-2-9/*.DTA')
-loop=0
-allpeak=[]
-saline_peak=[]
-
 for file in path:
     # READ FILES
     datafile = open(file)
@@ -52,7 +49,7 @@ for file in path:
     raw_d2.append(raw_d2[len(raw_d2) - 1])
 
     # APPLY SAVITSKY-GOLAY TO RAW SIGNAL
-    savgol_list = ps.optimize_savgol(list_y)
+    savgol_list = process_signal.optimize_savgol(list_y)
     opt_window_size1 = savgol_list[1]
     opt_order1 = savgol_list[2]
     list_y_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
@@ -66,12 +63,36 @@ for file in path:
     filtered_d1 = []
     for i in range(len(x) - 1):
         filtered_d1.append((list_y_filtered[0][i + 1] - list_y_filtered[0][i]) / (list_x[i + 1] - list_x[i]))
-    filtered_d1.append(filtered_d1[len(filtered_d1) - 1])
+    filtered_d1.append(filtered_d1[len(filtered_d1) - 1])  # concatenate last value for uniform data length
 
     # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
+    
 
+    # TODO: APPLY CONDITIONS
+    position_vector = []  # might be better to perform call by reference
+    position_vector = conditions.before_exponential_increase(position_vector=position_vector, d1_data=filtered_d1)
+    # apply other conditions
+    # ...
 
     # TODO: PINPOINT RESULT AFTER EACH ALGORITHM
+    # At this stage, the index of the value reflecting the oxygen level is specified
+    possible_oxygen_level = []
+    for index, element in enumerate(position_vector):
+        if element > 0:
+            possible_oxygen_level.append([list_x[index], list_y[index]])
+
+    show_result.plot_result_with_prediction(label_text=label_text, list_x=list_x,
+                                            list_y=list_y, list_possible_oxygen_level=possible_oxygen_level)
+
+
+
+
+
+
+
+
+
+
 
 
 
