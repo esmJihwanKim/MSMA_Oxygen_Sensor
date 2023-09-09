@@ -1,8 +1,5 @@
 
 import matplotlib.pyplot as plt
-import numpy as np
-
-
 
 def plot_result(label_text, x, list_y, list_y_filtered, raw_d1, filtered_d1):
     fig, ax = plt.subplots(2, 2, figsize=(12, 7))

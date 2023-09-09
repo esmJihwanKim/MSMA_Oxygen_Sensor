@@ -18,6 +18,12 @@ for file in path:
     # READ FILES
     datafile = open(file)
     lines = datafile.readlines()
+
+    # EXTRACT AXIS LABEL FROM FILE NAMES
+    label_text = file.split("VISHAL-")[1]
+    label_text = label_text.split((".DTA"))[0]
+
+    # EXTRACT VOLTAGE AND CURRENT DATA FROM THE FILE
     count = 84
     for i in lines[84:len(lines)]:
         lines[count] = i.split()
@@ -40,7 +46,7 @@ for file in path:
     for i in range(len(raw_d1) - 1):
         raw_d2.append((raw_d1[i + 1] - raw_d1[i]) / (list_x[i + 1] - list_x[i]))
 
-    # Pad the array with final values,
+    # PAD THE ARRAYS WITH FINAL VALUES TO EQUALIZE LENGTH
     raw_d1.append(raw_d1[len(raw_d1) - 1])
     raw_d2.append(raw_d2[len(raw_d2) - 1])
     raw_d2.append(raw_d2[len(raw_d2) - 1])
@@ -52,11 +58,9 @@ for file in path:
     list_y_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
 
     # TODO: APPLY FFT-LPF TO RAW SIGNAL
-    signal_frequency = []
-    signal_amplitude = []
+    # signal_frequency = []
+    # signal_amplitude = []
     # signal_frequency, signal_amplitude = ps.fft(list_y)
-    # plt.plot(signal_frequency, signal_amplitude)
-    # plt.show
 
     # COMPUTE FILTERED DERIVATIVE
     filtered_d1 = []
@@ -64,11 +68,11 @@ for file in path:
         filtered_d1.append((list_y_filtered[0][i + 1] - list_y_filtered[0][i]) / (list_x[i + 1] - list_x[i]))
     filtered_d1.append(filtered_d1[len(filtered_d1) - 1])
 
-    # EXTRACT AXIS LABEL FROM FILE NAMES
-    label_text = file.split("VISHAL-")[1]
-    label_text = label_text.split((".DTA"))[0]
+    # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
 
-    # TODO: save the plots in disk
+
+    # TODO: PINPOINT RESULT AFTER EACH ALGORITHM
+
 
 
 
