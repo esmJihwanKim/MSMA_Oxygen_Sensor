@@ -71,8 +71,10 @@ for file in path:
     # TODO: APPLY CONDITIONS
     position_vector = []  # might be better to perform call by reference
     position_vector = conditions.before_exponential_increase(position_vector=position_vector, d1_data=filtered_d1)
+    position_vector = conditions.voltage_range(position_vector=position_vector, list_x=list_x)
     # apply other conditions
     # ...
+    print(position_vector)
 
     # TODO: PINPOINT RESULT AFTER EACH ALGORITHM
     # At this stage, the index of the value reflecting the oxygen level is specified

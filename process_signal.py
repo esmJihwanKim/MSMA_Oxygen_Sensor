@@ -51,12 +51,6 @@ def optimize_original_savgol(dev):
     return [error, opt_window_size, opt_order]
 
 
-def check_for_less(data, val):
-    for x in data:
-        if val < x:
-            return False
-    return True
-
 # Fourier transform
 def fft(data):
     data_length = data.len()
