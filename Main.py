@@ -19,7 +19,7 @@ for file in path:
     # EXTRACT AXIS LABEL FROM FILE NAMES
     label_text = file.split("VISHAL-")[1]
     label_text = label_text.split((".DTA"))[0]
-
+    print(label_text)
     # EXTRACT VOLTAGE AND CURRENT DATA FROM THE FILE
     count = 84
     for i in lines[84:len(lines)]:
@@ -44,9 +44,9 @@ for file in path:
         raw_d2.append((raw_d1[i + 1] - raw_d1[i]) / (list_x[i + 1] - list_x[i]))
 
     # PAD THE ARRAYS WITH FINAL VALUES TO EQUALIZE LENGTH
-    raw_d1.append(raw_d1[len(raw_d1) - 1])
-    raw_d2.append(raw_d2[len(raw_d2) - 1])
-    raw_d2.append(raw_d2[len(raw_d2) - 1])
+    raw_d1.append(raw_d1[-1])
+    raw_d2.append(raw_d2[-1])
+    raw_d2.append(raw_d2[-1])
 
     # APPLY SAVITSKY-GOLAY TO RAW SIGNAL
     savgol_list = Process_signal.optimize_savgol(list_y)
@@ -67,24 +67,21 @@ for file in path:
 
     # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
 
-
     # TODO: APPLY CONDITIONS
-    position_vector = []  # might be better to perform call by reference
-    position_vector = Conditions.before_exponential_increase(position_vector=position_vector, d1_data=filtered_d1)
+    position_vector = [0] * len(list_x)  # might be better to perform call by reference
     position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
     # apply other conditions
-    # ...
+    print(list_x)
     print(position_vector)
 
     # TODO: PINPOINT RESULT AFTER EACH ALGORITHM
     # At this stage, the index of the value reflecting the oxygen level is specified
-    possible_oxygen_level = []
+    list_possible_predictions = []
     for index, element in enumerate(position_vector):
         if element > 0:
-            possible_oxygen_level.append([list_x[index], list_y[index]])
+            list_possible_predictions.append([list_x[index], list_y[index]])
 
-    Show_result.plot_result_with_prediction(label_text=label_text, list_x=list_x,
-                                            list_y=list_y, list_possible_oxygen_level=possible_oxygen_level)
+    Show_result.plot_result_with_level_prediction(label_text=label_text, list_x=list_x, list_y=list_y, list_possible_predictions=list_possible_predictions)
 
 
 
