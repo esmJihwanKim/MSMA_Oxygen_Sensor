@@ -26,7 +26,13 @@ def voltage_range(position_vector, list_x):
 
 
 # TODO: CONDITION: derivative range between 0-0.5
-# peaks need to exist after a rise, not a fall
+def derivative_range(position_vector, d1_data):
+    for index, value in enumerate(d1_data):
+        if value < 0.5 and value > -0.5:
+            position_vector[index] = position_vector[index] + 1
+    return position_vector
+
+# CONDITION: peaks need to exist after a rise, not a fall
 def peak_after_rise(position_vector, d1_data):
     positive_flag = 0
     for index, value in enumerate(d1_data):
@@ -39,7 +45,7 @@ def peak_after_rise(position_vector, d1_data):
     return position_vector
 
 
-# TODO: CONDITION: peaks after positive gradient
+# CONDITION: peaks after positive gradient
 # after all functions have been found
 def maximum_yvalue(raw_ydata):
     max_value = 0

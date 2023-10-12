@@ -65,20 +65,39 @@ for file in path:
         filtered_d1.append((list_y_filtered[0][i + 1] - list_y_filtered[0][i]) / (list_x[i + 1] - list_x[i]))
     filtered_d1.append(filtered_d1[len(filtered_d1) - 1])  # concatenate last value for uniform data length
 
+    filtered_d2 = []
+    for i in range(len(x)-1):
+        filtered_d2.append((filtered_d1[0][i+1] - filtered_d1[0][i]) / (list_x[i+1] - list_x[i]))
+    filtered_d2.append(filtered_d2[len(filtered_d2) - 1])
+
     # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
 
-    # TODO: APPLY CONDITIONS
+    # TODO: Apply Conditions
     position_vector = [0] * len(list_x)  # might be better to perform call by reference
-    position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
-    # apply other conditions
+
+    # voltage range
+    # position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
+
+    # derivative range
+    position_vector = Conditions.derivative_range(position_vector=position_vector, d1_data=filtered_d1)
+
     print(list_x)
     print(position_vector)
 
-    # TODO: PINPOINT RESULT AFTER EACH ALGORITHM
+    # TODO: PINPOINT RESULT AFTER CONDITIONS
     # At this stage, the index of the value reflecting the oxygen level is specified
     list_possible_predictions = []
+    ideal_score = 0
+    ideal_position = 0
+
+    # find the highest score
     for index, element in enumerate(position_vector):
-        if element > 0:
+        if element > ideal_score:
+            ideal_score = element
+
+    # find the position of the highest score
+    for index, element in enumerate(position_vector):
+        if element == ideal_score:
             list_possible_predictions.append([list_x[index], list_y[index]])
 
     Show_result.plot_result_with_level_prediction(label_text=label_text, list_x=list_x, list_y=list_y, list_possible_predictions=list_possible_predictions)
