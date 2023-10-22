@@ -46,11 +46,15 @@ def peak_after_rise(position_vector, d1_data):
 
 # CONDITION: peaks after positive gradient
 # after all functions have been found
-def maximum_yvalue(raw_ydata):
+def maximum_yvalue(position_vector, y_data):
+    max_score = 0
+    max_score_index = 0
     max_value = 0
-    max_index = 0
-    for index, value in enumerate(raw_ydata):
+    max_value_index = 0
+    for index, value in enumerate(y_data):
+        # within the highest score range
         if value > max_value:
             max_value = value
             max_index = index
+    position_vector[max_index] = position_vector[max_index] + 1
     return max_index

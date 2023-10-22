@@ -55,7 +55,7 @@ for file in path:
     list_y_savgol_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
 
     # TODO: APPLY FFT-LPF TO RAW SIGNAL
-    #list_y_lowpass_filtered = Process_signal.fft_lowpass(list_y_savgol_filtered[0])
+    list_y_lowpass_filtered = Process_signal.fft_lowpass(list_y)
 
 
     # COMPUTE FILTERED DERIVATIVE
@@ -78,6 +78,8 @@ for file in path:
     # position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
     # applying derivative range condition
     position_vector = Conditions.derivative_range(position_vector=position_vector, d1_data=filtered_d1)
+    # applying filtered derivative
+    #position_vector = Conditions.maximum_yvalue(position_vector=position_vector, y_data=list_y)
 
 
     #print(list_x)
