@@ -7,6 +7,7 @@ from scipy import signal
 from sklearn.metrics import mean_squared_error
 import numpy as np
 from numpy import diff
+import matplotlib.pyplot as plt
 
 def mean_absolute_error(act, pred):
     diff = pred - act
@@ -52,9 +53,13 @@ def optimize_original_savgol(dev):
 
 
 # Fourier transform
-def fft(data):
-    data_length = data.len()
-    sig_fft = fftpack.fft(data)
-    sig_amp = 2 / 0.2 * np.abs(sig_fft)
-    sig_freq = np.abs(fftpack.fftfreq(0.2, (0.2*data_length)/data_length))
-    return sig_freq, sig_amp
+def fft_lowpass(data):
+    data_copy = data
+    data_copy_size = data_copy.size
+    time_step = 0.2
+    signal_fft = fftpack.fft(data_copy)
+    sample_frequency = fftpack.fftfreq(data_copy_size, d=time_step)
+    signal_amplitude = np.abs(signal_fft)
+    plt.plot(sample_frequency, signal_amplitude)
+    return sample_frequency, signal_amplitude
+

@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 from scipy import signal
 
-path = glob.glob('../../Dataset/B2-2-9/*.DTA')
+path = glob.glob('../../Dataset/B2-2-10/*.DTA')
 for file in path:
     # READ FILES
     datafile = open(file)
@@ -52,37 +52,36 @@ for file in path:
     savgol_list = Process_signal.optimize_savgol(list_y)
     opt_window_size1 = savgol_list[1]
     opt_order1 = savgol_list[2]
-    list_y_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
+    list_y_savgol_filtered = signal.savgol_filter(list_y, 53, 3), # savgol_filter(data, window size, order of polynomial)
 
     # TODO: APPLY FFT-LPF TO RAW SIGNAL
-    # signal_frequency = []
-    # signal_amplitude = []
-    # signal_frequency, signal_amplitude = ps.fft(list_y)
+    #list_y_lowpass_filtered = Process_signal.fft_lowpass(list_y_savgol_filtered[0])
+
 
     # COMPUTE FILTERED DERIVATIVE
     filtered_d1 = []
     for i in range(len(x) - 1):
-        filtered_d1.append((list_y_filtered[0][i + 1] - list_y_filtered[0][i]) / (list_x[i + 1] - list_x[i]))
+        filtered_d1.append((list_y_savgol_filtered[0][i + 1] - list_y_savgol_filtered[0][i]) / (list_x[i + 1] - list_x[i]))
     filtered_d1.append(filtered_d1[len(filtered_d1) - 1])  # concatenate last value for uniform data length
 
     filtered_d2 = []
     for i in range(len(x)-1):
-        filtered_d2.append((filtered_d1[0][i+1] - filtered_d1[0][i]) / (list_x[i+1] - list_x[i]))
+        filtered_d2.append((filtered_d1[i+1] - filtered_d1[i]) / (list_x[i+1] - list_x[i]))
     filtered_d2.append(filtered_d2[len(filtered_d2) - 1])
 
     # TODO: (OPTIONAL) SAVE THE PLOTS ON DISK
 
     # TODO: Apply Conditions
-    position_vector = [0] * len(list_x)  # might be better to perform call by reference
+    position_vector = [0] * len(list_x)
 
-    # voltage range
+    # applying voltage range condition
     # position_vector = Conditions.voltage_range(position_vector=position_vector, list_x=list_x)
-
-    # derivative range
+    # applying derivative range condition
     position_vector = Conditions.derivative_range(position_vector=position_vector, d1_data=filtered_d1)
 
-    print(list_x)
-    print(position_vector)
+
+    #print(list_x)
+    #print(position_vector)
 
     # TODO: PINPOINT RESULT AFTER CONDITIONS
     # At this stage, the index of the value reflecting the oxygen level is specified

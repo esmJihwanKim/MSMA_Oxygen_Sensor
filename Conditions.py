@@ -14,7 +14,6 @@ def before_exponential_increase(position_vector, d1_data):
                 position_vector[i] = position_vector[i] + 1
             return  position_vector
 
-
 # TODO: CONDITION: voltage range from 0.35 - 0.65
 # sort out the data points that are in the voltage range
 # peaks exist in between -0.35V and -0.65V range
@@ -28,7 +27,7 @@ def voltage_range(position_vector, list_x):
 # TODO: CONDITION: derivative range between 0-0.5
 def derivative_range(position_vector, d1_data):
     for index, value in enumerate(d1_data):
-        if value < 0.5 and value > -0.5:
+        if value < 1 and value > -1:
             position_vector[index] = position_vector[index] + 1
     return position_vector
 
@@ -36,9 +35,9 @@ def derivative_range(position_vector, d1_data):
 def peak_after_rise(position_vector, d1_data):
     positive_flag = 0
     for index, value in enumerate(d1_data):
-        if value > 0.2:
+        if value > 0.5:
             positive_flag = 1
-        if value < -0.2:
+        if value < -0.5:
             positive_flag = 0
         if positive_flag == 1 and value > 0 and value < 0.2:
             position_vector[index] = position_vector[index] + 1
